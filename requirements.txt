@@ -1,0 +1,6 @@
+tweepy
+python-dotenv
+langchain-ollama
+requests
+beautifulsoup4
+
