@@ -21,6 +21,7 @@ BEARER_TOKEN = os.getenv("BEARER_TOKEN")
 # File to store seen articles
 SEEN_ARTICLES_FILE = "seen_articles.json"
 CHECK_INTERVAL = 600  # Check every 10 minutes (adjust as needed)
+MODEL_NAME = "llama3.1:latest"
 
 
 def load_seen_articles():
@@ -152,10 +153,10 @@ def get_article_content(url):
 
 def generate_text(prompt, content):
     """Generate text using the local model from Ollama"""
-    ollama_client = ChatOllama(model="smollm2", base_url="http://127.0.0.1:11434/")
+    ollama_client = ChatOllama(model=MODEL_NAME, base_url="http://127.0.0.1:11434/")
     messages = [
         SystemMessage(
-            content="You are an X bot. Use the voice of Sean Hannity to write a Post. The post is a funny rant. Keep it short, satirical, funny, and sweet!. One sentence summary of the article. Do not include any links, hashtags, or mentions (@someone). 100 character limit."
+            content="You are an X bot. Use the voice of Sean Hannity to write a Post. The post is a funny rant. Keep it short, satirical, funny, and sweet!. Do not include any links, hashtags, or mentions (@someone). 100 character limit, and no labels, just the tweet."
         ),
         HumanMessage(content=f"{prompt}\n\nArticle content: {content}"),
     ]
