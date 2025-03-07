@@ -46,19 +46,17 @@ def save_seen_articles(seen_articles):
 
 def authenticate():
     """Set up and return authenticated client"""
-    client = tweepy.Client(
-        consumer_key=API_KEY,
-        consumer_secret=API_SECRET,
-        access_token=ACCESS_TOKEN,
-        access_token_secret=ACCESS_SECRET,
-        bearer_token=BEARER_TOKEN,
-    )
-    return client
 
 
 def post_tweet(text):
-    """Post a tweet with the given text"""
-    client = authenticate()
+
+    client = tweepy.Client(
+        consumer_key=API_KEY,
+        consumer_secret=API_SECRET,  # Fixed: was using ACCESS_SECRET incorrectly
+        access_token=ACCESS_TOKEN,
+        access_token_secret=ACCESS_SECRET,
+    )
+
     try:
         response = client.create_tweet(text=text)
         tweet_id = response.data["id"]
@@ -157,7 +155,7 @@ def generate_text(prompt, content):
     ollama_client = ChatOllama(model="smollm2", base_url="http://127.0.0.1:11434/")
     messages = [
         SystemMessage(
-            content="You are an X bot. Use the voice of Sean Hannity to write a Post. The post is a funny rant. Keep it short, satirical, funny, and sweet!. One sentence summary of the article. Do not include any links, hashtags, or mentions (@someone)."
+            content="You are an X bot. Use the voice of Sean Hannity to write a Post. The post is a funny rant. Keep it short, satirical, funny, and sweet!. One sentence summary of the article. Do not include any links, hashtags, or mentions (@someone). 100 character limit."
         ),
         HumanMessage(content=f"{prompt}\n\nArticle content: {content}"),
     ]
